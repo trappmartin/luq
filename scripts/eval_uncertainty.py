@@ -5,7 +5,7 @@ import json
 from loguru import logger
 from datasets import load_dataset, DatasetDict
 
-from luq.models import PredictiveEntropyEstimator
+from luq.methods import PredictiveEntropyEstimator
 from luq.evals.uncertainy_eval import UncertaintyEvaluator
 from luq.datasets import GenerationDataset
 

@@ -1,1 +1,1 @@
-from luq.llm.llm import *  # noqa: F403
+from luq.models.transformers import *  # noqa: F403

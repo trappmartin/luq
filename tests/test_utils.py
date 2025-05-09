@@ -1,6 +1,6 @@
 import torch
 
-from luq.llm import LLMWrapper, LLMOutput, LLMSamples, generate_n_samples_and_answer
+from luq.models import LLMWrapper, LLMOutput, LLMSamples, generate_n_samples_and_answer
 
 
 class MockLLM(LLMWrapper):

@@ -22,16 +22,21 @@ pip install luq
 ### Use LUQ model for UQ
 ```python
 import luq
-from luq.models import MaxProbabilityEstimator
+from luq.methods import MaxProbabilityEstimator
+from luq.models import HFLLMWrapper, generate_n_samples_and_answer
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model_id = "gpt2"
+
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype="auto", device_map="auto")
+
 # Create text generation pipeline
 generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
 # sample from LLM
-samples = luq.llm.generate_n_samples_and_answer(
+samples = generate_n_samples_and_answer(
     pipeline,
     prompt="A, B, C, or D"
 )

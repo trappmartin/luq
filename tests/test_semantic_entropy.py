@@ -1,9 +1,9 @@
 import numpy as np
 import torch
 
-from luq.models.semantic_entropy import SemanticEntropyEstimator
-from luq.llm import LLMOutput, LLMWrapper, generate_n_samples_and_answer, LLMSamples
-from luq.llm.nli import NLIWrapper, NLIResult, NLIOutput, construct_nli_table
+from luq.methods.semantic_entropy import SemanticEntropyEstimator
+from luq.models import LLMOutput, LLMWrapper, generate_n_samples_and_answer, LLMSamples
+from luq.models.nli import NLIWrapper, NLIResult, NLIOutput, construct_nli_table
 from luq.utils import SeqProbMode
 
 
