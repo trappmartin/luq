@@ -1,6 +1,6 @@
 import torch
 import networkx as nx
-from luq.models.kernel_utils import von_neumann_entropy, heat_kernel, normalize_kernel
+from luq.methods.kernel_utils import von_neumann_entropy, heat_kernel, normalize_kernel
 
 
 def test_von_neumann_entropy():

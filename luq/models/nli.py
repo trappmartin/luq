@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 import typing as T
 
-from luq.llm.llm import LLMSamples
+from luq.models.llm import LLMSamples
 
 
 class NLIResult(Enum):

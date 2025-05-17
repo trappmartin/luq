@@ -1,8 +1,8 @@
 import torch
 import typing as T
 
-from luq.llm import LLMWrapper, LLMOutput
-from luq.models.base_uq_model import BaseUQModel
+from luq.models import LLMWrapper, LLMOutput
+from luq.methods.base_uq_model import BaseUQModel
 from luq.utils import entropy, SeqProbMode
 
 

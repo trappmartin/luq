@@ -1,11 +1,11 @@
 import torch
 import typing as T
 
-from luq.llm import LLMSamples
-from luq.llm.nli import NLIWrapper, NLITable
-from luq.models.base_uq_model import BaseUQModel
+from luq.models import LLMSamples
+from luq.models.nli import NLIWrapper, NLITable
+from luq.methods.base_uq_model import BaseUQModel
 from luq.utils import SeqProbMode
-from luq.models.kernel_utils import (
+from luq.methods.kernel_utils import (
     von_neumann_entropy,
     normalize_kernel,
     KernelType,

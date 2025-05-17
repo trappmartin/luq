@@ -1,7 +1,7 @@
 import pytest
 import torch
-from luq.models.p_true import PTrueEstimator
-from luq.llm import LLMSamples, LLMOutput
+from luq.methods.p_true import PTrueEstimator
+from luq.models import LLMSamples, LLMOutput
 
 
 @pytest.fixture

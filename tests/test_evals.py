@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 from luq.evals.accuracy_eval import AccuracyEvaluator
 from luq.evals.uncertainy_eval import UncertaintyEvaluator
-from luq.models.base_uq_model import BaseUQModel
+from luq.methods.base_uq_model import BaseUQModel
 from luq.datasets import GenerationDataset
 
 

@@ -1,13 +1,13 @@
 import torch
 
-from luq.llm.nli import (
+from luq.models.nli import (
     hard_nli_clustering,
     NLIResult,
     NLIOutput,
     NLIWrapper,
     construct_nli_table,
 )
-from luq.llm.llm import LLMOutput, LLMSamples
+from luq.models.llm import LLMOutput, LLMSamples
 
 
 def test_nli_output():

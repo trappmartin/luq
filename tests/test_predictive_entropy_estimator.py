@@ -1,8 +1,8 @@
 import numpy as np
 import torch
 
-from luq.models.predictive_entropy import PredictiveEntropyEstimator, SeqProbMode
-from luq.llm import LLMOutput, LLMWrapper, generate_n_samples_and_answer
+from luq.methods.predictive_entropy import PredictiveEntropyEstimator, SeqProbMode
+from luq.models import LLMOutput, LLMWrapper, generate_n_samples_and_answer
 
 
 SAMPLE_LOGPROBS = [-1.0, -12.0, -7.2, -1.0, -12.0, -7.2, -1.0, -12.0, -7.2]

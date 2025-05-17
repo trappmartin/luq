@@ -1,8 +1,8 @@
 import numpy as np
 import torch
 
-from luq.models.max_probability import MaxProbabilityEstimator
-from luq.llm import LLMOutput, LLMWrapper, generate_n_samples_and_answer
+from luq.methods.max_probability import MaxProbabilityEstimator
+from luq.models import LLMOutput, LLMWrapper, generate_n_samples_and_answer
 
 
 SAMPLE_LOGPROBS = [-1.0, -12.0, -7.2, -1.0, -12.0, -7.2, -1.0, -12.0, -7.2]

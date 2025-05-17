@@ -5,21 +5,21 @@ import json
 from loguru import logger
 from datasets import load_dataset, DatasetDict
 
-from luq.models import PredictiveEntropyEstimator
+from luq.methods import PredictiveEntropyEstimator
 from luq.evals.uncertainy_eval import UncertaintyEvaluator
 from luq.datasets import GenerationDataset
 
 
-def evaluate_model(model, dataset, model_name):
-    """Evaluate a single uncertainty quantification model."""
-    evaluator = UncertaintyEvaluator(model)
+def evaluate_model(method, dataset, method_name):
+    """Evaluate a single uncertainty quantification method."""
+    evaluator = UncertaintyEvaluator(method)
 
     auroc_results = evaluator.evaluate_auroc(dataset)
     threshold_curve_results = evaluator.evaluate_threshold_curve(dataset)
     threshold_results = evaluator.evaluate_threshold(dataset, uncertainty_threshold=0.5)
 
     return {
-        "model": model_name,
+        "model": method_name,
         "auroc": auroc_results["auroc"],
         "mean_uncertainty": auroc_results["mean_uncertainty"],
         "std_uncertainty": auroc_results["std_uncertainty"],
@@ -55,18 +55,18 @@ def main():
         logger.info(f"Loading from HF: {args.dataset_path}")
         dataset = load_dataset(args.dataset_path)
 
-    # Initialize models
-    models = {
+    # Initialize methods
+    methods = {
         # "semantic_entropy": SemanticEntropyEstimator(),
         "predictive_entropy": PredictiveEntropyEstimator(),
     }
 
     # Evaluate each model
     results = []
-    for model_name, model in models.items():
-        logger.info(f"Evaluating {model_name}...")
-        model_results = {split: evaluate_model(model, dataset[split], model_name) for split in dataset.keys()}
-        results.append(model_results)
+    for method_name, method in methods.items():
+        logger.info(f"Evaluating {method_name}...")
+        method_results = {split: evaluate_model(method, dataset[split], method_name) for split in dataset.keys()}
+        results.append(method_results)
 
     # Save results
     output_path = Path(args.output_path)

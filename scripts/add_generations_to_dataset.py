@@ -1,8 +1,12 @@
 import argparse
 import json
+import torch
 from tqdm import tqdm
 from loguru import logger
 from transformers import pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+import luq.utils
 
 
 def read_questions_and_answers(file_path):
@@ -17,19 +21,27 @@ def read_questions_and_answers(file_path):
         raise
 
 
-def generate_samples(generator, prompt, num_samples, temperature, top_p, top_k):
-    """Generate samples using Hugging Face text generation model."""
+def generate_samples(tokenizer, model, prompt, num_samples, temperature, top_p, top_k):
+    """Generate samples one by one using Hugging Face model and tokenizer to reduce memory usage."""
     try:
-        responses = generator(
-            prompt,
-            max_length=generator.model.config.max_position_embeddings,
-            # max_new_tokens=1024,
-            num_return_sequences=num_samples,
-            temperature=temperature,
-        )
-        samples = [resp["generated_text"] for resp in responses]
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(model.device)
+        samples = []
+
+        for _ in range(num_samples):
+            output = model.generate(
+                input_ids=input_ids,
+                max_length=model.config.max_position_embeddings,
+                do_sample=True,
+                temperature=temperature,
+                top_p=top_p,
+                top_k=top_k,
+            )
+            decoded = tokenizer.decode(output[0], skip_special_tokens=True)
+            samples.append(decoded)
+
         logger.info(f"Generated {num_samples} sample(s) for prompt: {prompt}")
         return samples
+
     except Exception as e:
         logger.error(f"Error generating samples: {e}")
         raise
@@ -51,18 +63,31 @@ def main(
     input_file,
     output_file,
     num_samples,
+    num_questions,
     model_name,
     temperature,
     temperature_answer,
     top_p,
     top_k,
+    torch_dtype=torch.float16,
+    device=0, # >=0 for gpu and -1 for cpu
 ):
     """Main function to handle the workflow."""
+    if num_questions == -1:
+        num_questions = None
     logger.info("Starting the sample generation process.")
     logger.info(f"Loading {model_name}")
     try:
-        generator = pipeline("text-generation", model=model_name)
-        logger.info(f"Successfully loaded model {model_name}.")
+        logger.info(f"{torch.cuda.device_count()} GPU devices available")
+        #generator = pipeline("text-generation", model=model_name, torch_dtype=torch_dtype, devic=device, device_map="auto")
+
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            torch_dtype=torch_dtype,
+            device_map="auto",  # Use bitsandbytes or accelerate to split across GPUs or use CPU+GPU
+        )
+        logger.info(f"Successfully loaded model {model_name} to {model.device}.")
     except Exception as e:
         logger.error(f"Failed to load model {model_name}: {e}")
         raise
@@ -80,17 +105,19 @@ def main(
             "model_name": model_name,
             "num_samples": num_samples,
         }
-        for entry in tqdm(cur_data):
+
+        for entry in tqdm(cur_data[:num_questions]):
             question = entry.get("question")
             gt_answer = entry.get("gt_answer")
             if not question:
                 logger.warning(f"Skipping entry with missing question. Entry: {entry}")
                 continue
             samples = generate_samples(
-                generator, question, num_samples, temperature, top_p=top_p, top_k=top_k
+                tokenizer, model, question, num_samples, temperature, top_p=top_p, top_k=top_k
             )
             answer = generate_samples(
-                generator,
+                tokenizer,
+                model,
                 question,
                 num_samples=1,
                 temperature=temperature_answer,
@@ -147,6 +174,26 @@ if __name__ == "__main__":
         default=0.1,
         help="Temperature for generating final answer.",
     )
+    parser.add_argument(
+        "--num-questions",
+        type=int,
+        default=-1,
+        help="Number of questions used from the dataset (-1 to use all)",
+    )
+    parser.add_argument(
+        "--torch-dtype",
+        type=str,
+        default="bfloat16",
+        help="Torch floating point precision.",
+    )
+
+    parser.add_argument(
+        "--device",
+        type=int,
+        default=0,
+        help="GPU id (>= 0), or CPU (-1)"
+    )
+
     parser.add_argument("--top-k", type=int, default=25, help="top-k sampling")
     parser.add_argument("--top-p", type=float, default=0.25, help="top-p sampling")
 
@@ -161,4 +208,7 @@ if __name__ == "__main__":
         temperature_answer=args.temperature_answer,
         top_k=args.top_k,
         top_p=args.top_p,
+        num_questions=args.num_questions,
+        torch_dtype=luq.utils.dtype_map[args.torch_dtype],
+        device=args.device
     )

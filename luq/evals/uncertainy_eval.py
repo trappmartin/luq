@@ -3,9 +3,9 @@ import numpy as np
 from typing import Dict, List, Union
 from sklearn.metrics import roc_auc_score, auc
 from loguru import logger
-from luq.models.base_uq_model import BaseUQModel
+from luq.methods.base_uq_model import BaseUQModel
 from luq.datasets import GenerationDataset
-from luq.llm import LLMSamples, LLMOutput
+from luq.models import LLMSamples, LLMOutput
 
 
 class UncertaintyEvaluator:

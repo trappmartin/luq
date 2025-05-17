@@ -2,14 +2,14 @@ import torch
 import typing as T
 from collections import Counter
 
-from luq.llm import LLMSamples
-from luq.llm.nli import (
+from luq.models import LLMSamples
+from luq.models.nli import (
     NLIWrapper,
     NLITable,
     construct_nli_table,
     hard_nli_clustering,
 )
-from luq.models.base_uq_model import BaseUQModel
+from luq.methods.base_uq_model import BaseUQModel
 from luq.utils import entropy, SeqProbMode
 
 

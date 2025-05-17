@@ -84,16 +84,20 @@ def test_read_questions_and_answers_failure():
 def test_generate_samples_success():
     mock_generator = MagicMock()
     mock_generator.return_value = [{"generated_text": "Sample response"}]
+    mock_tokenizer = MagicMock()
+    mock_tokenizer.decode.return_value = "Sample response"
 
-    samples = generate_samples(mock_generator, "Test prompt", 1, 1.0, 0.9, 50)
+    samples = generate_samples(mock_tokenizer, mock_generator, "Test prompt", 1, 1.0, 0.9, 50)
     assert len(samples) == 1
     assert samples[0] == "Sample response"
 
 
 def test_generate_samples_failure():
-    mock_generator = MagicMock(side_effect=Exception("Generation error"))
+    mock_generator = MagicMock()
+    mock_generator.generate.side_effect = Exception("Generation error")
+    mock_tokenizer = MagicMock()
     with pytest.raises(Exception, match="Generation error"):
-        generate_samples(mock_generator, "Test prompt", 1, 1.0, 0.9, 50)
+        generate_samples(mock_tokenizer, mock_generator, "Test prompt", 1, 1.0, 0.9, 50)
 
 
 def test_write_samples_to_file_success():

@@ -1,7 +1,7 @@
 import typing as T
 
-from luq.llm import LLMOutput
-from luq.models.base_uq_model import BaseUQModel
+from luq.models import LLMOutput
+from luq.methods.base_uq_model import BaseUQModel
 from luq.utils import SeqProbMode
 
 

@@ -1,9 +1,9 @@
 import pytest
 import torch
-from luq.models.kernel_language_entropy import KernelLanguageEntropyEstimator
-from luq.llm import LLMSamples, LLMOutput
-from luq.models.kernel_utils import KernelType
-from luq.llm.nli import NLIWrapper
+from luq.methods.kernel_language_entropy import KernelLanguageEntropyEstimator
+from luq.models import LLMSamples, LLMOutput
+from luq.methods.kernel_utils import KernelType
+from luq.models.nli import NLIWrapper
 
 
 @pytest.fixture

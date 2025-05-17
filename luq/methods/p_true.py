@@ -1,7 +1,7 @@
 from loguru import logger
 import typing as T
-from luq.llm import LLMSamples, LLMWrapper, LLMOutput
-from luq.models.base_uq_model import BaseUQModel
+from luq.models import LLMSamples, LLMWrapper, LLMOutput
+from luq.methods.base_uq_model import BaseUQModel
 from luq.utils import SeqProbMode
 
 
