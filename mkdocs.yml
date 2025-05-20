@@ -1,13 +1,14 @@
 site_name: luq
+site_url: https://trappmartin.github.io/luq # change this
+
+repo_url: https://github.com/AlexanderVNikitin/luq
+repo_name: AlexanderVNikitin/luq
 
 theme:
   name: material
   language: en
   icon:
     repo: fontawesome/brands/github  # optional, for GitHub icon
-
-repo_url: https://github.com/AlexanderVNikitin/luq
-repo_name: AlexanderVNikitin/luq
 
 markdown_extensions:
   - pymdownx.highlight:
