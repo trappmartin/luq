@@ -6,6 +6,7 @@
 Language Models Uncertainty Quantification (LUQ)
 </h3>
 
+[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](https://anikitin.me/luq/)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ThUAboQQYgM5kJ0dCtwozSkC6WzW0GdE?usp=drive_link)
 [![Pypi version](https://img.shields.io/pypi/v/luq)](https://pypi.org/project/luq/)
 [![unit-tests](https://github.com/AlexanderVNikitin/luq/actions/workflows/test.yml/badge.svg?event=push)](https://github.com/AlexanderVNikitin/luq/actions?query=workflow%3ATests+branch%3Amain)
